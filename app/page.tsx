@@ -3,7 +3,8 @@
 import { AnimatedSection } from './components/AnimatedSection';
 import { useState, useEffect } from 'react';
 
-const API_BASE_URL = 'http://localhost:8080';
+// const API_BASE_URL = 'http://localhost:8080';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 // The ProblemAnalysis interface remains the same
 interface ProblemAnalysis {
@@ -51,7 +52,7 @@ export default function HomePage() {
     try {
       const res = await fetch(`${API_BASE_URL}/api/v1/analyze?topic=${encodeURIComponent(topic)}`);
       if (!res.ok) {
-        throw new Error(`Failed to fetch analysis for "${topic}"`);
+        throw new Error(`Failed to fetch analysis for ${topic}`);
       }
       const data: ProblemAnalysis = await res.json();
       setAnalysis(data);
@@ -191,7 +192,7 @@ export default function HomePage() {
               </AnimatedSection>
 
               <footer className="mt-12 pt-6 border-t border-gray-700 text-center">
-                <p className="text-md text-gray-500 italic">"{analysis.motivationalProverb}"</p>
+                <p className="text-md text-gray-500 italic">&quot;{analysis.motivationalProverb}&quot;</p>
               </footer>
             </div>
           )}
