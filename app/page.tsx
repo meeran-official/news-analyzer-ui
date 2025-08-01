@@ -101,6 +101,12 @@ export default function HomePage() {
     fetchAnalysis(randomTopic);
   };
 
+  const handleClearClick = () => {
+    setTopicInput("");
+    setAnalysis(null);
+    setError(null);
+  };
+
   
 
   return (
@@ -121,6 +127,13 @@ export default function HomePage() {
             />
             <button onClick={handleAnalyzeClick} disabled={isLoading} className="px-4 py-2 bg-cyan-600 rounded hover:bg-cyan-700 disabled:bg-gray-500 transition-colors">
               {isLoading ? 'Analyzing...' : 'Analyze'}
+            </button>
+            <button
+              onClick={handleClearClick}
+              disabled={!topicInput}
+              className="px-4 py-2 bg-gray-600 rounded hover:bg-gray-700 disabled:bg-gray-500 transition-colors"
+            >
+              Clear
             </button>
           </div>
 
@@ -145,6 +158,11 @@ export default function HomePage() {
               {!showAllTopics && suggestedTopics.length > 4 && (
                   <button onClick={() => setShowAllTopics(true)} className="px-3 py-1 text-sm text-cyan-400 hover:text-cyan-300">
                       Show More...
+                  </button>
+              )}
+              {showAllTopics && suggestedTopics.length > 4 && (
+                  <button onClick={() => setShowAllTopics(false)} className="px-3 py-1 text-sm text-cyan-400 hover:text-cyan-300">
+                      Show Less
                   </button>
               )}
             </div>
