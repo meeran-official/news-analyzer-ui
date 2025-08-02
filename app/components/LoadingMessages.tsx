@@ -18,9 +18,10 @@ const loadingMessages = [
 
 interface LoadingMessagesProps {
   isLoading: boolean;
+  useMockData?: boolean;
 }
 
-export const LoadingMessages: React.FC<LoadingMessagesProps> = ({ isLoading }) => {
+export const LoadingMessages: React.FC<LoadingMessagesProps> = ({ isLoading, useMockData = false }) => {
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
 
   useEffect(() => {
@@ -44,7 +45,9 @@ export const LoadingMessages: React.FC<LoadingMessagesProps> = ({ isLoading }) =
       <div className="text-center space-y-4">
         <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400/30 backdrop-blur-sm">
           <Loader2 className="h-5 w-5 text-cyan-400 animate-spin" />
-          <span className="text-cyan-300 font-medium">Deep Analysis in Progress</span>
+          <span className="text-cyan-300 font-medium">
+            {useMockData ? 'Mock Data Analysis in Progress' : 'Deep Analysis in Progress'}
+          </span>
         </div>
         
         {/* Animated Message */}
@@ -99,7 +102,10 @@ export const LoadingMessages: React.FC<LoadingMessagesProps> = ({ isLoading }) =
       {/* Fun Facts Footer */}
       <div className="text-center">
         <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
-          💡 Did you know? Our AI processes information from multiple global sources in seconds!
+          {useMockData 
+            ? '💡 Using mock data for testing - no API calls are being made!'
+            : '💡 Did you know? Our AI processes information from multiple global sources in seconds!'
+          }
         </p>
       </div>
     </div>

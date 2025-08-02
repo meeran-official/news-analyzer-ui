@@ -20,16 +20,93 @@
   --foreground: #f8fafc;
 }
 
-body {
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
-  transition: background 0.3s ease, color 0.3s ease;
-  background: linear-gradient(to bottom right, #f8fafc, #e2e8f0, #cbd5e1);
+/* Prevent flash of wrong theme */
+html {
+  scroll-behavior: smooth;
+  /* Default to light theme to prevent flash */
+  background: #f8fafc;
   color: #1f2937;
 }
 
-.dark body {
-  background: linear-gradient(to bottom right, #000000, #0a0a0a, #111111);
+html.dark {
+  background: #000000;
   color: #ffffff;
+}
+
+body {
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+}
+
+/* Light theme body styles */
+.light body {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
+  color: #1f2937;
+}
+
+/* Desktop light theme enhancements */
+@media (min-width: 768px) {
+  .light body {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 25%, #e2e8f0 75%, #cbd5e1 100%);
+  }
+  
+  .light .bg-white\/90 {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(20px);
+  }
+  
+  .light .border-gray-200 {
+    border-color: rgba(229, 231, 235, 0.8) !important;
+  }
+}
+
+/* Mobile light theme optimizations */
+@media (max-width: 767px) {
+  .light body {
+    background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+  }
+  
+  .light .bg-white\/90 {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+  }
+}
+
+/* Dark theme body styles */
+.dark body {
+  background: linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #111111 100%);
+  color: #ffffff;
+}
+
+/* Mobile dark theme enhancements */
+@media (max-width: 767px) {
+  .dark body {
+    background: linear-gradient(180deg, #000000 0%, #0f0f0f 25%, #1a1a1a 75%, #0a0a0a 100%);
+  }
+  
+  .dark .bg-black\/90 {
+    background-color: rgba(0, 0, 0, 0.95) !important;
+    backdrop-filter: blur(20px);
+  }
+  
+  .dark .border-gray-800 {
+    border-color: rgba(31, 41, 55, 0.8) !important;
+  }
+  
+  .dark .text-white {
+    color: #f9fafb !important;
+  }
+}
+
+/* Desktop dark theme optimizations */
+@media (min-width: 768px) {
+  .dark body {
+    background: linear-gradient(135deg, #0a0a0a 0%, #111111 100%);
+  }
+  
+  .dark .bg-black\/90 {
+    background-color: rgba(0, 0, 0, 0.85) !important;
+  }
 }
 
 /* Cursor pointer for interactive elements */
@@ -90,13 +167,6 @@ a,
 .animate-fadeIn {
   animation: fadeIn 0.5s ease-out;
 }
-
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Enhanced theme improvements */
 
 /* Light theme enhancements */
 .light {
@@ -170,4 +240,50 @@ html {
   outline-offset: 2px;
 }
 
+/* Responsive improvements for cards and components */
+@media (max-width: 767px) {
+  /* Mobile-specific card styling */
+  .light .bg-gradient-to-br {
+    backdrop-filter: blur(10px);
+  }
+  
+  .dark .bg-gradient-to-br {
+    backdrop-filter: blur(15px);
+  }
+  
+  /* Mobile typography adjustments */
+  .light .text-gray-600 {
+    color: #4b5563 !important;
+  }
+  
+  .dark .text-gray-300 {
+    color: #d1d5db !important;
+  }
+}
 
+@media (min-width: 768px) {
+  /* Desktop-specific enhancements */
+  .light .backdrop-blur-xl {
+    backdrop-filter: blur(24px);
+  }
+  
+  .dark .backdrop-blur-xl {
+    backdrop-filter: blur(20px);
+  }
+}
+
+/* Theme transition improvements */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Prevent layout shift during theme loading */
+.theme-loading {
+  visibility: hidden;
+}
+
+.theme-loaded {
+  visibility: visible;
+}

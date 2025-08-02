@@ -36,7 +36,34 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                function getSystemTheme() {
+                  if (typeof window === 'undefined') return 'light';
+                  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                }
+                
+                function getResponsiveTheme() {
+                  const isMobile = window.innerWidth < 768;
+                  return getSystemTheme(); // Respect system preference on all devices
+                }
+                
+                try {
+                  const savedTheme = localStorage.getItem('news-analyzer-theme');
+                  const theme = savedTheme || getResponsiveTheme();
+                  document.documentElement.classList.add(theme);
+                } catch (e) {
+                  document.documentElement.classList.add('light');
+                }
+              })();
+            `,
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning={true}>
