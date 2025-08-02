@@ -2,13 +2,24 @@
 
 import { motion } from 'framer-motion';
 
-export function AnimatedSection({ children }: { children: React.ReactNode }) {
+interface AnimatedSectionProps {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}
+
+export function AnimatedSection({ children, delay = 0, className = "" }: AnimatedSectionProps) {
   return (
     <motion.section
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="mb-12" // Keep original styling
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ 
+        duration: 0.6, 
+        delay,
+        ease: [0.25, 0.46, 0.45, 0.94]
+      }}
+      className={className}
     >
       {children}
     </motion.section>
