@@ -47,6 +47,9 @@ export default function HomePage() {
       }
       const data: ProblemAnalysis = await res.json();
       setAnalysis(data);
+      setTimeout(() => {
+        document.getElementById('analysis-section')?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An unknown error occurred.');
     } finally {
@@ -95,8 +98,8 @@ export default function HomePage() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-100 text-gray-900">
-      <div className="container mx-auto px-4 py-6 sm:py-10 space-y-8">
+    <main className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-gray-100">
+      <div className="max-w-4xl mx-auto px-4 py-6 sm:py-10 space-y-8">
         <SearchBar
           topic={topicInput}
           onTopicChange={setTopicInput}
@@ -124,18 +127,18 @@ export default function HomePage() {
 
 const LoadingSkeleton = () => (
   <div className="w-full animate-pulse space-y-4">
-    <div className="h-10 bg-gray-300 rounded-md w-3/4 mx-auto"></div>
-    <div className="h-5 bg-gray-300 rounded-md w-full"></div>
-    <div className="p-6 bg-white rounded shadow">
-      <div className="h-8 bg-gray-300 rounded-md w-1/3 mb-4"></div>
-      <div className="h-6 bg-gray-300 rounded-md w-full"></div>
+    <div className="h-10 bg-white/10 rounded-md w-3/4 mx-auto"></div>
+    <div className="h-5 bg-white/10 rounded-md w-full"></div>
+    <div className="p-6 bg-white/10 rounded-lg border border-white/10">
+      <div className="h-8 bg-white/10 rounded-md w-1/3 mb-4"></div>
+      <div className="h-6 bg-white/10 rounded-md w-full"></div>
     </div>
   </div>
 );
 
 const ErrorMessage = ({ message }: { message: string }) => (
-  <div className="p-4 bg-red-100 border border-red-300 rounded-lg text-center">
-    <p className="font-bold text-red-600">Analysis Failed</p>
-    <p className="text-red-500">{message}</p>
+  <div className="p-4 bg-red-500/20 border border-red-500/30 rounded-lg text-center">
+    <p className="font-bold text-red-400">Analysis Failed</p>
+    <p className="text-red-300">{message}</p>
   </div>
 );
