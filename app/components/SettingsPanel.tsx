@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Settings, Sun, Moon, Globe, X, Database } from 'lucide-react';
+import { Settings, Globe, X, Database } from 'lucide-react';
 import { useSettings } from '../contexts/SettingsContext';
 
 export const SettingsPanel: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { theme, setTheme, language, setLanguage, useMockData, setUseMockData } = useSettings();
+  const { language, setLanguage, useMockData, setUseMockData } = useSettings();
 
   const togglePanel = () => setIsOpen(!isOpen);
 
@@ -42,37 +42,6 @@ export const SettingsPanel: React.FC = () => {
                 >
                   <X className="h-5 w-5 text-gray-500" />
                 </button>
-              </div>
-
-              {/* Theme Setting */}
-              <div className="space-y-3">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Theme
-                </label>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setTheme('light')}
-                    className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-lg border transition-all cursor-pointer ${
-                      theme === 'light'
-                        ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-300'
-                        : 'bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
-                    }`}
-                  >
-                    <Sun className="h-4 w-4" />
-                    <span className="text-sm font-medium">Light</span>
-                  </button>
-                  <button
-                    onClick={() => setTheme('dark')}
-                    className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-lg border transition-all cursor-pointer ${
-                      theme === 'dark'
-                        ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-300'
-                        : 'bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
-                    }`}
-                  >
-                    <Moon className="h-4 w-4" />
-                    <span className="text-sm font-medium">Dark</span>
-                  </button>
-                </div>
               </div>
 
               {/* Language Setting */}
