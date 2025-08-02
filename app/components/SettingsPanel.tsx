@@ -15,7 +15,7 @@ export const SettingsPanel: React.FC = () => {
       {/* Settings Button */}
       <button
         onClick={togglePanel}
-        className="fixed top-6 right-6 z-50 p-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:scale-110 transition-all duration-200 cursor-pointer"
+        className="fixed top-6 right-6 z-50 p-3 rounded-full backdrop-blur-sm border transition-all duration-200 cursor-pointer hover:scale-110 bg-black/10 text-gray-900 border-black/20 hover:bg-black/20 dark:bg-white/10 dark:text-white dark:border-white/20 dark:hover:bg-white/20"
         aria-label="Open Settings"
       >
         <Settings className="h-5 w-5" />
