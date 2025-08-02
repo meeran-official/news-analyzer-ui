@@ -12,8 +12,8 @@ export const TopicSuggestions = ({ topics, onSelect, isLoading }: TopicSuggestio
   const visibleTopics = showAll ? topics : topics.slice(0, 4);
 
   return (
-    <div className="pt-4 border-t border-gray-700">
-      <p className="text-center text-sm text-gray-400 mb-3">Or select a trending topic:</p>
+    <div className="pt-6 border-t border-white/10">
+      <p className="text-center text-sm text-gray-300 mb-4">Or select a trending topic:</p>
       <div className="flex flex-wrap justify-center items-center gap-2">
         {topics.length > 0 ? (
           <>
@@ -22,7 +22,7 @@ export const TopicSuggestions = ({ topics, onSelect, isLoading }: TopicSuggestio
                 key={topic}
                 onClick={() => onSelect(topic)}
                 disabled={isLoading}
-                className="px-3 py-1 bg-gray-700 text-sm rounded-full hover:bg-cyan-700 disabled:bg-gray-600 transition-colors"
+                className="px-3 py-1 rounded-full bg-white/5 text-sm text-gray-200 hover:bg-cyan-600 disabled:opacity-40 transition-colors"
               >
                 {topic}
               </button>
@@ -45,7 +45,7 @@ export const TopicSuggestions = ({ topics, onSelect, isLoading }: TopicSuggestio
             )}
           </>
         ) : (
-          <p className="text-xs text-gray-500">Loading topics...</p>
+          <p className="text-xs text-gray-400">Loading topics...</p>
         )}
       </div>
     </div>
