@@ -13,11 +13,18 @@
 /* Light theme */
 .light {
   --foreground: #1f2937;
+  --bg-gradient: linear-gradient(135deg, #ffffff 0%, #f8fafc 25%, #e2e8f0 75%, #cbd5e1 100%);
+  --overlay-bg: rgba(255, 255, 255, 0.95);
+  --border-color: rgba(229, 231, 235, 0.8);
 }
 
 /* Dark theme */
 .dark {
   --foreground: #f8fafc;
+  --bg-gradient: linear-gradient(135deg, #0a0a0a 0%, #111111 100%);
+  --overlay-bg: rgba(0, 0, 0, 0.85);
+  --border-color: rgba(31, 41, 55, 0.8);
+  --muted-text: #f9fafb;
 }
 
 /* Prevent flash of wrong theme */
@@ -41,72 +48,36 @@ body {
 
 /* Light theme body styles */
 .light body {
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
-  color: #1f2937;
+  background: var(--bg-gradient);
+  color: var(--foreground);
 }
 
-/* Desktop light theme enhancements */
-@media (min-width: 768px) {
-  .light body {
-    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 25%, #e2e8f0 75%, #cbd5e1 100%);
-  }
-  
-  .light .bg-white\/90 {
-    background-color: rgba(255, 255, 255, 0.95) !important;
-    backdrop-filter: blur(20px);
-  }
-  
-  .light .border-gray-200 {
-    border-color: rgba(229, 231, 235, 0.8) !important;
-  }
+.light .bg-white\/90 {
+  background-color: var(--overlay-bg) !important;
+  backdrop-filter: blur(20px);
 }
 
-/* Mobile light theme optimizations */
-@media (max-width: 767px) {
-  .light body {
-    background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
-  }
-  
-  .light .bg-white\/90 {
-    background-color: rgba(255, 255, 255, 0.9) !important;
-  }
+.light .border-gray-200 {
+  border-color: var(--border-color) !important;
 }
 
 /* Dark theme body styles */
 .dark body {
-  background: linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #111111 100%);
-  color: #ffffff;
+  background: var(--bg-gradient);
+  color: var(--foreground);
 }
 
-/* Mobile dark theme enhancements */
-@media (max-width: 767px) {
-  .dark body {
-    background: linear-gradient(180deg, #000000 0%, #0f0f0f 25%, #1a1a1a 75%, #0a0a0a 100%);
-  }
-  
-  .dark .bg-black\/90 {
-    background-color: rgba(0, 0, 0, 0.95) !important;
-    backdrop-filter: blur(20px);
-  }
-  
-  .dark .border-gray-800 {
-    border-color: rgba(31, 41, 55, 0.8) !important;
-  }
-  
-  .dark .text-white {
-    color: #f9fafb !important;
-  }
+.dark .bg-black\/90 {
+  background-color: var(--overlay-bg) !important;
+  backdrop-filter: blur(20px);
 }
 
-/* Desktop dark theme optimizations */
-@media (min-width: 768px) {
-  .dark body {
-    background: linear-gradient(135deg, #0a0a0a 0%, #111111 100%);
-  }
-  
-  .dark .bg-black\/90 {
-    background-color: rgba(0, 0, 0, 0.85) !important;
-  }
+.dark .border-gray-800 {
+  border-color: var(--border-color) !important;
+}
+
+.dark .text-white {
+  color: var(--muted-text) !important;
 }
 
 /* Cursor pointer for interactive elements */
