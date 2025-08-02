@@ -21,19 +21,19 @@ export const SearchBar = ({
   isLoading,
   onKeyDown,
 }: SearchBarProps) => (
-  <div className="relative p-8 bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 space-y-8">
+  <div className="relative p-8 bg-white/90 dark:bg-black/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 space-y-8">
     {/* Header with improved typography */}
     <div className="text-center space-y-3">
-      <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+      <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 dark:from-cyan-400 dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
         News Analyzer
       </h1>
-      <p className="text-gray-300 text-lg font-medium">AI-Powered Topic Analysis</p>
+      <p className="text-gray-600 dark:text-gray-300 text-lg font-medium">AI-Powered Topic Analysis</p>
     </div>
 
     {/* Search input with enhanced styling */}
     <div className="relative">
       <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-        <Search className="h-5 w-5 text-gray-400" />
+        <Search className="h-5 w-5 text-gray-500 dark:text-gray-400" />
       </div>
       <input
         type="text"
@@ -41,7 +41,7 @@ export const SearchBar = ({
         onChange={(e) => onTopicChange(e.target.value)}
         onKeyDown={onKeyDown}
         placeholder="Enter any news topic to analyze..."
-        className="w-full pl-12 pr-4 py-4 text-lg rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-400/50 focus:bg-white/10 transition-all duration-200"
+        className="w-full pl-12 pr-4 py-4 text-lg rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-400/50 focus:bg-white dark:focus:bg-black transition-all duration-200"
       />
     </div>
 
@@ -70,7 +70,7 @@ export const SearchBar = ({
       <button
         onClick={onClear}
         disabled={!topic}
-        className="px-6 py-4 rounded-xl bg-white/5 border border-white/10 text-white font-medium hover:bg-white/10 hover:border-white/20 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+        className="px-6 py-4 rounded-xl bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white font-medium hover:bg-gray-200 dark:hover:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
       >
         <div className="flex items-center justify-center gap-2">
           <X className="h-4 w-4" />
@@ -84,7 +84,7 @@ export const SearchBar = ({
       <button
         onClick={onRandom}
         disabled={isLoading}
-        className="group inline-flex items-center gap-2 text-gray-300 hover:text-cyan-400 disabled:text-gray-500 transition-all duration-200 hover:scale-105"
+        className="group inline-flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-cyan-400 disabled:text-gray-400 dark:disabled:text-gray-500 transition-all duration-200 hover:scale-105"
       >
         <Shuffle className="h-4 w-4 group-hover:rotate-180 transition-transform duration-300" />
         <span className="font-medium">Try a random topic</span>
