@@ -42,19 +42,13 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
-                function getSystemTheme() {
-                  if (typeof window === 'undefined') return 'light';
-                  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-                }
-                
                 function getResponsiveTheme() {
                   const isMobile = window.innerWidth < 768;
-                  return getSystemTheme(); // Respect system preference on all devices
+                  return isMobile ? 'dark' : 'light';
                 }
-                
+
                 try {
-                  const savedTheme = localStorage.getItem('news-analyzer-theme');
-                  const theme = savedTheme || getResponsiveTheme();
+                  const theme = getResponsiveTheme();
                   document.documentElement.classList.add(theme);
                 } catch (e) {
                   document.documentElement.classList.add('light');

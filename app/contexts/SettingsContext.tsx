@@ -9,7 +9,6 @@ interface SettingsContextType {
   theme: Theme;
   language: Language;
   useMockData: boolean;
-  setTheme: (theme: Theme) => void;
   setLanguage: (language: Language) => void;
   setUseMockData: (useMockData: boolean) => void;
   isRequestInProgress: boolean;
@@ -31,22 +30,11 @@ interface SettingsProviderProps {
   children: ReactNode;
 }
 
-// Function to get system preference
-const getSystemTheme = (): Theme => {
-  if (typeof window === 'undefined') return 'light';
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-};
-
 // Function to get responsive theme based on screen size
 const getResponsiveTheme = (): Theme => {
   if (typeof window === 'undefined') return 'light';
-  
   const isMobile = window.innerWidth < 768; // md breakpoint
-  const systemTheme = getSystemTheme();
-  
-  // Default to system preference, but you can customize this logic
-  // For now, let's respect system preference on all devices
-  return systemTheme;
+  return isMobile ? 'dark' : 'light';
 };
 
 export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) => {
@@ -56,65 +44,36 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) 
   const [isRequestInProgress, setIsRequestInProgress] = useState(false);
   const [isThemeLoaded, setIsThemeLoaded] = useState(false);
 
-  // Initialize theme from localStorage or system preference
+  // Initialize theme and other settings
   useEffect(() => {
-    const initializeTheme = () => {
-      const savedTheme = typeof window !== 'undefined' 
-        ? localStorage.getItem('news-analyzer-theme') as Theme 
-        : null;
-      
+    const initializeSettings = () => {
       const savedLanguage = typeof window !== 'undefined'
-        ? localStorage.getItem('news-analyzer-language') as Language
+        ? (localStorage.getItem('news-analyzer-language') as Language)
         : null;
-      
+
       const savedMockData = typeof window !== 'undefined'
         ? localStorage.getItem('news-analyzer-use-mock-data') === 'true'
         : false;
-      
-      let initialTheme: Theme;
-      
-      if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
-        initialTheme = savedTheme;
-      } else {
-        // Use responsive theme logic
-        initialTheme = getResponsiveTheme();
-      }
-      
-      // Apply theme immediately to prevent flash
+
+      const initialTheme = getResponsiveTheme();
+
       if (typeof window !== 'undefined') {
         const root = document.documentElement;
         root.classList.remove('light', 'dark');
         root.classList.add(initialTheme);
       }
-      
+
       setTheme(initialTheme);
-      
+
       if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'ta')) {
         setLanguage(savedLanguage);
       }
-      
+
       setUseMockData(savedMockData);
-      
       setIsThemeLoaded(true);
     };
 
-    initializeTheme();
-
-    // Listen for system theme changes
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleSystemThemeChange = (e: MediaQueryListEvent) => {
-      const savedTheme = localStorage.getItem('news-analyzer-theme');
-      // Only update if user hasn't explicitly set a theme
-      if (!savedTheme) {
-        const newTheme = e.matches ? 'dark' : 'light';
-        setTheme(newTheme);
-        document.documentElement.classList.remove('light', 'dark');
-        document.documentElement.classList.add(newTheme);
-      }
-    };
-
-    mediaQuery.addEventListener('change', handleSystemThemeChange);
-    return () => mediaQuery.removeEventListener('change', handleSystemThemeChange);
+    initializeSettings();
   }, []);
 
   // Apply theme changes
@@ -123,7 +82,6 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) 
       const root = document.documentElement;
       root.classList.remove('light', 'dark');
       root.classList.add(theme);
-      localStorage.setItem('news-analyzer-theme', theme);
     }
   }, [theme, isThemeLoaded]);
 
@@ -145,7 +103,6 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) 
     theme,
     language,
     useMockData,
-    setTheme,
     setLanguage,
     setUseMockData,
     isRequestInProgress,
