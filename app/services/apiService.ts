@@ -2,6 +2,10 @@ import { ProblemAnalysis } from '../types';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
+if (!API_BASE_URL) {
+  throw new Error('NEXT_PUBLIC_API_BASE_URL is not defined');
+}
+
 export class ApiService {
   async fetchTopicSuggestions(): Promise<string[]> {
     try {
@@ -13,6 +17,9 @@ export class ApiService {
       return Array.isArray(topics) ? topics : [];
     } catch (error) {
       console.error('Failed to fetch topic suggestions', error);
+      if (error instanceof TypeError) {
+        throw new Error('Backend unavailable—check server or API key');
+      }
       throw error;
     }
   }
@@ -26,6 +33,9 @@ export class ApiService {
       return await res.text();
     } catch (error) {
       console.error('Failed to fetch random topic', error);
+      if (error instanceof TypeError) {
+        throw new Error('Backend unavailable—check server or API key');
+      }
       throw error;
     }
   }
@@ -46,6 +56,9 @@ export class ApiService {
       return data;
     } catch (error) {
       console.error('Failed to fetch analysis', error);
+      if (error instanceof TypeError) {
+        throw new Error('Backend unavailable—check server or API key');
+      }
       throw error;
     }
   }
