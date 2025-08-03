@@ -28,8 +28,12 @@
 }
 
 /* Prevent flash of wrong theme */
-html {
+html,
+body {
   scroll-behavior: smooth;
+}
+
+html {
   /* Default to light theme to prevent flash */
   background: #f8fafc;
   color: #1f2937;
