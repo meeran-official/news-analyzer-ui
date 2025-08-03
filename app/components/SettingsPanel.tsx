@@ -6,7 +6,7 @@ import { useSettings } from '../contexts/SettingsContext';
 
 export const SettingsPanel: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { language, setLanguage, useMockData, setUseMockData } = useSettings();
+  const { language, setLanguage, useMockData, setUseMockData, isMockDataEnabled } = useSettings();
 
   const togglePanel = () => setIsOpen(!isOpen);
 
@@ -75,41 +75,43 @@ export const SettingsPanel: React.FC = () => {
                 </div>
               </div>
 
-              {/* Mock Data Setting */}
-              <div className="space-y-3">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Data Source
-                </label>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setUseMockData(false)}
-                    className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-lg border transition-all cursor-pointer ${
-                      !useMockData
-                        ? 'bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-700 text-purple-700 dark:text-purple-300'
-                        : 'bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
-                    }`}
-                  >
-                    <Globe className="h-4 w-4" />
-                    <span className="text-sm font-medium">Live API</span>
-                  </button>
-                  <button
-                    onClick={() => setUseMockData(true)}
-                    className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-lg border transition-all cursor-pointer ${
-                      useMockData
-                        ? 'bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-700 text-purple-700 dark:text-purple-300'
-                        : 'bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
-                    }`}
-                  >
-                    <Database className="h-4 w-4" />
-                    <span className="text-sm font-medium">Mock Data</span>
-                  </button>
+              {/* Mock Data Setting - Only show if enabled */}
+              {isMockDataEnabled && (
+                <div className="space-y-3">
+                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Data Source
+                  </label>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setUseMockData(false)}
+                      className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-lg border transition-all cursor-pointer ${
+                        !useMockData
+                          ? 'bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-700 text-purple-700 dark:text-purple-300'
+                          : 'bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                      }`}
+                    >
+                      <Globe className="h-4 w-4" />
+                      <span className="text-sm font-medium">Live API</span>
+                    </button>
+                    <button
+                      onClick={() => setUseMockData(true)}
+                      className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-lg border transition-all cursor-pointer ${
+                        useMockData
+                          ? 'bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-700 text-purple-700 dark:text-purple-300'
+                          : 'bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                      }`}
+                    >
+                      <Database className="h-4 w-4" />
+                      <span className="text-sm font-medium">Mock Data</span>
+                    </button>
+                  </div>
+                  {useMockData && (
+                    <p className="text-xs text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 p-2 rounded">
+                      Using mock data for testing. No API calls will be made.
+                    </p>
+                  )}
                 </div>
-                {useMockData && (
-                  <p className="text-xs text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 p-2 rounded">
-                    Using mock data for testing. No API calls will be made.
-                  </p>
-                )}
-              </div>
+              )}
 
               {/* Info */}
               <div className="pt-4 border-t border-gray-200 dark:border-gray-700">

@@ -9,6 +9,8 @@ interface SettingsContextType {
   theme: Theme;
   language: Language;
   useMockData: boolean;
+  isMockDataEnabled: boolean;
+  setTheme: (theme: Theme) => void;
   setLanguage: (language: Language) => void;
   setUseMockData: (useMockData: boolean) => void;
   isRequestInProgress: boolean;
@@ -99,10 +101,15 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) 
     }
   }, [useMockData]);
 
+  // Check if mock data is enabled via environment variable
+  const isMockDataEnabled = process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true';
+
   const value: SettingsContextType = {
     theme,
     language,
     useMockData,
+    isMockDataEnabled,
+    setTheme,
     setLanguage,
     setUseMockData,
     isRequestInProgress,

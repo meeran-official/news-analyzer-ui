@@ -29,14 +29,13 @@ export class ApiService {
     try {
       const res = await fetch(`${API_BASE_URL}/api/v1/analyze/suggestions`);
       if (!res.ok) {
-        console.warn('Failed to fetch topic suggestions, falling back to mock data');
-        return mockTopicSuggestions;
+        throw new Error(`Failed to fetch topic suggestions: ${res.status} ${res.statusText}`);
       }
       const topics = await res.json();
-      return Array.isArray(topics) ? topics : mockTopicSuggestions;
+      return Array.isArray(topics) ? topics : [];
     } catch (error) {
       console.error('Failed to fetch topic suggestions', error);
-      return mockTopicSuggestions;
+      throw error;
     }
   }
 
@@ -50,15 +49,12 @@ export class ApiService {
     try {
       const res = await fetch(`${API_BASE_URL}/api/v1/analyze/random-topic`);
       if (!res.ok) {
-        console.warn('Failed to fetch random topic, falling back to mock data');
-        const randomIndex = Math.floor(Math.random() * mockRandomTopics.length);
-        return mockRandomTopics[randomIndex];
+        throw new Error(`Failed to fetch random topic: ${res.status} ${res.statusText}`);
       }
       return await res.text();
     } catch (error) {
       console.error('Failed to fetch random topic', error);
-      const randomIndex = Math.floor(Math.random() * mockRandomTopics.length);
-      return mockRandomTopics[randomIndex];
+      throw error;
     }
   }
 
@@ -89,9 +85,8 @@ export class ApiService {
       const data: ProblemAnalysis = await res.json();
       return data;
     } catch (error) {
-      console.error('Failed to fetch analysis, falling back to mock data', error);
-      // Fallback to mock data on error
-      return generateMockAnalysis(topic);
+      console.error('Failed to fetch analysis', error);
+      throw error;
     }
   }
 }
@@ -99,13 +94,18 @@ export class ApiService {
 // Create a singleton instance
 export const apiService = new ApiService();
 
+// Helper function to check if mock data is enabled
+export const isMockDataEnabled = (): boolean => {
+  return process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true';
+};
+
 // Helper function to check if we should use mock data
 export const shouldUseMockData = (): boolean => {
   if (typeof window === 'undefined') return false;
   
-  // Check for environment variable
-  if (process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true') {
-    return true;
+  // Only allow mock data if it's enabled via environment variable
+  if (!isMockDataEnabled()) {
+    return false;
   }
   
   // Check for localStorage setting

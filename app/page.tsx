@@ -14,7 +14,7 @@ import { apiService } from './services/apiService';
 // API_BASE_URL is now handled by the apiService
 
 export default function HomePage() {
-  const { language, isRequestInProgress, setIsRequestInProgress, isThemeLoaded, useMockData } = useSettings();
+  const { language, isRequestInProgress, setIsRequestInProgress, isThemeLoaded, useMockData, isMockDataEnabled } = useSettings();
   const [analysis, setAnalysis] = useState<ProblemAnalysis | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -71,8 +71,13 @@ export default function HomePage() {
 
   // Update API service when mock data setting changes
   useEffect(() => {
-    apiService.setUseMockData(useMockData);
-  }, [useMockData]);
+    // Only allow mock data if it's enabled via environment variable
+    if (isMockDataEnabled && useMockData) {
+      apiService.setUseMockData(true);
+    } else {
+      apiService.setUseMockData(false);
+    }
+  }, [useMockData, isMockDataEnabled]);
 
   useEffect(() => {
     const loadInitialData = async () => {
@@ -159,7 +164,7 @@ export default function HomePage() {
         />
         
         {/* Use new LoadingMessages component */}
-        <LoadingMessages isLoading={isLoading} useMockData={useMockData} />
+        <LoadingMessages isLoading={isLoading} useMockData={isMockDataEnabled && useMockData} />
         
         {error && (
           <ErrorMessage 

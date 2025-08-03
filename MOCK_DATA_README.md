@@ -4,11 +4,13 @@ This application includes a comprehensive mock data system that allows you to te
 
 ## Features
 
-- **Toggle Mock Data**: Switch between real API calls and mock data through the settings panel
+- **Secure Mock Data**: Mock data is only available when explicitly enabled via environment variable
+- **Toggle Mock Data**: Switch between real API calls and mock data through the settings panel (when enabled)
 - **Realistic Data**: Mock data includes realistic analysis for various topics
-- **Fallback Support**: Automatically falls back to mock data if API calls fail
+- **No Fallback**: No automatic fallback to mock data - API failures are properly handled
 - **Environment Configuration**: Can be configured via environment variables
-- **Persistent Settings**: Mock data preference is saved in localStorage
+- **Persistent Settings**: Mock data preference is saved in localStorage (when enabled)
+- **Production Safe**: Mock data option is completely hidden in production when disabled
 
 ## How to Use
 
@@ -18,6 +20,8 @@ This application includes a comprehensive mock data system that allows you to te
 2. In the "Data Source" section, choose between:
    - **Live API**: Uses real API calls
    - **Mock Data**: Uses mock data for testing
+
+**Note**: This option is only available when `NEXT_PUBLIC_USE_MOCK_DATA=true` is set.
 
 ### 2. Environment Variable
 
@@ -36,8 +40,9 @@ NEXT_PUBLIC_USE_MOCK_DATA=false
 For production, you can:
 
 1. **Use Environment Variables**: Set `NEXT_PUBLIC_USE_MOCK_DATA=false` in your production environment
-2. **Remove Mock Data**: The mock data feature can be completely removed for production builds
-3. **Conditional Loading**: Mock data is only loaded when needed
+2. **Secure by Default**: Mock data is completely disabled and hidden when not enabled
+3. **No Fallback**: API failures are properly handled without falling back to mock data
+4. **Conditional Loading**: Mock data is only loaded when explicitly enabled
 
 ## Mock Data Content
 
@@ -90,18 +95,19 @@ app/
 ### API Service
 
 The `ApiService` class handles:
-- Switching between real and mock data
-- Automatic fallback to mock data on API failures
+- Switching between real and mock data (only when enabled)
+- Proper error handling without fallback to mock data
 - Simulated API delays for realistic experience
-- Error handling and logging
+- Secure access control based on environment variables
 
 ### Settings Context
 
 The settings context manages:
-- Mock data preference state
-- localStorage persistence
+- Mock data preference state (only when enabled)
+- localStorage persistence (only when enabled)
 - Environment variable integration
 - UI state management
+- Conditional rendering of mock data options
 
 ## Development Workflow
 
@@ -114,17 +120,23 @@ The settings context manages:
 
 ### Mock Data Not Working
 
-1. Check if the setting is enabled in the UI
-2. Verify environment variable is set correctly
+1. Check if `NEXT_PUBLIC_USE_MOCK_DATA=true` is set in environment variables
+2. Verify the setting is enabled in the UI (only visible when enabled)
 3. Clear localStorage and refresh the page
 4. Check browser console for errors
 
 ### API Calls Still Being Made
 
-1. Ensure `useMockData` is set to `true`
+1. Ensure `NEXT_PUBLIC_USE_MOCK_DATA=true` is set
 2. Check if the API service is properly initialized
 3. Verify the settings context is working
 4. Look for any direct fetch calls that bypass the service
+
+### Mock Data Option Not Visible
+
+1. Check if `NEXT_PUBLIC_USE_MOCK_DATA=true` is set
+2. The option is intentionally hidden when mock data is disabled
+3. This is a security feature to prevent unauthorized access to mock data
 
 ## Future Enhancements
 
