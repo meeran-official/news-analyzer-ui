@@ -8,11 +8,8 @@ export type Language = 'en' | 'ta';
 interface SettingsContextType {
   theme: Theme;
   language: Language;
-  useMockData: boolean;
-  isMockDataEnabled: boolean;
   setTheme: (theme: Theme) => void;
   setLanguage: (language: Language) => void;
-  setUseMockData: (useMockData: boolean) => void;
   isRequestInProgress: boolean;
   setIsRequestInProgress: (inProgress: boolean) => void;
   isThemeLoaded: boolean;
@@ -42,7 +39,6 @@ const getResponsiveTheme = (): Theme => {
 export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>('light');
   const [language, setLanguage] = useState<Language>('en');
-  const [useMockData, setUseMockData] = useState(false);
   const [isRequestInProgress, setIsRequestInProgress] = useState(false);
   const [isThemeLoaded, setIsThemeLoaded] = useState(false);
 
@@ -52,10 +48,6 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) 
       const savedLanguage = typeof window !== 'undefined'
         ? (localStorage.getItem('news-analyzer-language') as Language)
         : null;
-
-      const savedMockData = typeof window !== 'undefined'
-        ? localStorage.getItem('news-analyzer-use-mock-data') === 'true'
-        : false;
 
       const initialTheme = getResponsiveTheme();
 
@@ -71,7 +63,6 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) 
         setLanguage(savedLanguage);
       }
 
-      setUseMockData(savedMockData);
       setIsThemeLoaded(true);
     };
 
@@ -94,24 +85,11 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) 
     }
   }, [language]);
 
-  // Save mock data preference
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('news-analyzer-use-mock-data', useMockData.toString());
-    }
-  }, [useMockData]);
-
-  // Check if mock data is enabled via environment variable
-  const isMockDataEnabled = process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true';
-
   const value: SettingsContextType = {
     theme,
     language,
-    useMockData,
-    isMockDataEnabled,
     setTheme,
     setLanguage,
-    setUseMockData,
     isRequestInProgress,
     setIsRequestInProgress,
     isThemeLoaded,

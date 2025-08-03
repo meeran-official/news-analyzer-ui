@@ -1,31 +1,9 @@
 import { ProblemAnalysis } from '../types';
-import { 
-  mockTopicSuggestions, 
-  mockRandomTopics, 
-  mockAnalysisData, 
-  generateMockAnalysis, 
-  simulateApiDelay 
-} from '../data/mockData';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export class ApiService {
-  private useMockData: boolean;
-
-  constructor(useMockData: boolean = false) {
-    this.useMockData = useMockData;
-  }
-
-  setUseMockData(useMockData: boolean) {
-    this.useMockData = useMockData;
-  }
-
   async fetchTopicSuggestions(): Promise<string[]> {
-    if (this.useMockData) {
-      await simulateApiDelay(300, 800);
-      return mockTopicSuggestions;
-    }
-
     try {
       const res = await fetch(`${API_BASE_URL}/api/v1/analyze/suggestions`);
       if (!res.ok) {
@@ -40,12 +18,6 @@ export class ApiService {
   }
 
   async fetchRandomTopic(): Promise<string> {
-    if (this.useMockData) {
-      await simulateApiDelay(200, 500);
-      const randomIndex = Math.floor(Math.random() * mockRandomTopics.length);
-      return mockRandomTopics[randomIndex];
-    }
-
     try {
       const res = await fetch(`${API_BASE_URL}/api/v1/analyze/random-topic`);
       if (!res.ok) {
@@ -59,18 +31,6 @@ export class ApiService {
   }
 
   async fetchAnalysis(topic: string, language: string): Promise<ProblemAnalysis> {
-    if (this.useMockData) {
-      await simulateApiDelay(1000, 3000);
-      
-      // Check if we have predefined mock data for this topic
-      if (mockAnalysisData[topic]) {
-        return mockAnalysisData[topic];
-      }
-      
-      // Generate mock data for new topics
-      return generateMockAnalysis(topic);
-    }
-
     try {
       const params = new URLSearchParams({
         topic: topic,
@@ -93,27 +53,3 @@ export class ApiService {
 
 // Create a singleton instance
 export const apiService = new ApiService();
-
-// Helper function to check if mock data is enabled
-export const isMockDataEnabled = (): boolean => {
-  return process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true';
-};
-
-// Helper function to check if we should use mock data
-export const shouldUseMockData = (): boolean => {
-  if (typeof window === 'undefined') return false;
-  
-  // Only allow mock data if it's enabled via environment variable
-  if (!isMockDataEnabled()) {
-    return false;
-  }
-  
-  // Check for localStorage setting
-  const mockDataSetting = localStorage.getItem('news-analyzer-use-mock-data');
-  return mockDataSetting === 'true';
-};
-
-// Initialize the service with the correct setting
-if (typeof window !== 'undefined') {
-  apiService.setUseMockData(shouldUseMockData());
-} 

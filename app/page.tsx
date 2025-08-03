@@ -11,10 +11,8 @@ import { Loader2, AlertTriangle, RefreshCw } from 'lucide-react';
 import { useSettings } from './contexts/SettingsContext';
 import { apiService } from './services/apiService';
 
-// API_BASE_URL is now handled by the apiService
-
 export default function HomePage() {
-  const { language, isRequestInProgress, setIsRequestInProgress, isThemeLoaded, useMockData, isMockDataEnabled } = useSettings();
+  const { language, isRequestInProgress, setIsRequestInProgress, isThemeLoaded } = useSettings();
   const [analysis, setAnalysis] = useState<ProblemAnalysis | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -68,16 +66,6 @@ export default function HomePage() {
       return 'Global AI Regulation'; // Fallback
     }
   }, []);
-
-  // Update API service when mock data setting changes
-  useEffect(() => {
-    // Only allow mock data if it's enabled via environment variable
-    if (isMockDataEnabled && useMockData) {
-      apiService.setUseMockData(true);
-    } else {
-      apiService.setUseMockData(false);
-    }
-  }, [useMockData, isMockDataEnabled]);
 
   useEffect(() => {
     const loadInitialData = async () => {
@@ -164,7 +152,7 @@ export default function HomePage() {
         />
         
         {/* Use new LoadingMessages component */}
-        <LoadingMessages isLoading={isLoading} useMockData={isMockDataEnabled && useMockData} />
+        <LoadingMessages isLoading={isLoading} />
         
         {error && (
           <ErrorMessage 
