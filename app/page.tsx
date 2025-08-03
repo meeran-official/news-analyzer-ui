@@ -50,7 +50,12 @@ export default function HomePage() {
         document.getElementById('analysis-section')?.scrollIntoView({ behavior: 'smooth' });
       }, 100);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred.';
+      let errorMessage = 'An unknown error occurred.';
+      if (err instanceof Error) {
+        errorMessage = err.message === 'Failed to fetch'
+          ? 'Backend unavailable—check server or API key'
+          : err.message;
+      }
       setError(errorMessage);
     } finally {
       setIsLoading(false);
